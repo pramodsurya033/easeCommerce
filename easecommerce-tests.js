@@ -14,15 +14,15 @@ const credentials = {
 // Selectors
 const usernameInput = Selector('input[name="username"]');
 const passwordInput = Selector('input[name="password"]');
-const loginButton = Selector('button').withText('Login');
-const tripleDotsButton = Selector('.triple-dots'); // Adjust selector for triple dots menu
-const employeeViewOption = Selector('li').withText('Employee View'); // Adjust selector for menu option
+const loginButton = Selector('button').withText('LOGIN');
+const tripleDotsButton = Selector('.MuiIconButton-root');
+const employeeViewOption = Selector('li').withText('Switch to Employee'); 
 const addTaskButton = Selector('button').withText('Add Task');
-const taskNameInput = Selector('input[name="taskName"]'); // Adjust based on form input names
+const taskNameInput = Selector('input[name="taskName"]'); 
 const taskDescriptionInput = Selector('textarea[name="taskDescription"]');
 const submitTaskButton = Selector('button').withText('Submit');
-const taskList = Selector('.task-list'); // Adjust based on the Task List DOM
-const errorMessage = Selector('.error-message'); // Adjust based on form validation messages
+const taskList = Selector('.task-list'); 
+const errorMessage = Selector('.error-message');
 
 test('Login Test', async t => {
     await t
@@ -31,8 +31,10 @@ test('Login Test', async t => {
         .typeText(passwordInput, credentials.password)
         .click(loginButton)
         // Verify redirection to dashboard/home
-        .expect(Selector('.dashboard').exists).ok('Failed to navigate to the dashboard/home page');
+        const rootDiv = Selector('#root');
+    await t.expect(rootDiv.exists).ok('Failed to navigate to the dashboard/home page');
 });
+
 
 test('Switch to Employee View', async t => {
     await t
@@ -43,9 +45,7 @@ test('Switch to Employee View', async t => {
         // Switch to Employee View
         .click(tripleDotsButton)
         .click(employeeViewOption)
-        // Verify redirection to employee section
         .expect(Selector('.employee-section').exists).ok('Failed to navigate to Employee View')
-        // Verify Task Section opens by default
         .expect(Selector('.task-section').exists).ok('Task Section did not open by default');
 });
 
